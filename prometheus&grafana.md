@@ -131,7 +131,7 @@ Grafana web UI 👉 `http://<server-ip>:3000`
    ```
 3. Save & Test 
 
-# **6. Import Grafana Dashboard**
+## **6. Import Grafana Dashboard**
 
 1. Open Grafana → **Dashboards → Import**
 2. Use prebuilt **Node Exporter Full Dashboard (ID: 1860)**
