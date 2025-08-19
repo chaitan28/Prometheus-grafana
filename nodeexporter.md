@@ -66,7 +66,7 @@ Node Exporter runs on 👉 `http://<server-ip>:9100/metrics`
 
 ---
 
-# **6. Configure Prometheus to scrape Node Exporter**
+## **6. Configure Prometheus to scrape Node Exporter**
 
 Edit Prometheus config:
 
