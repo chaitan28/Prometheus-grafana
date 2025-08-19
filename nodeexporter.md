@@ -1,7 +1,3 @@
-Perfect 👍. To monitor your Ubuntu server itself, you’ll need **Node Exporter** (it exposes Linux system metrics to Prometheus).
-
----
-
 # **Install Node Exporter on Ubuntu**
 
 ### 1. Create user
@@ -99,15 +95,5 @@ sudo systemctl restart prometheus
 
 ---
 
-# **7. Import Grafana Dashboard**
 
-1. Open Grafana → **Dashboards → Import**
-2. Use prebuilt **Node Exporter Full Dashboard (ID: 1860)**
-   👉 [https://grafana.com/grafana/dashboards/1860](https://grafana.com/grafana/dashboards/1860)
-3. Select Prometheus as data source → Import.
 
-✅ Now you’ll see live CPU, memory, disk, and network metrics for your Ubuntu server in Grafana.
-
----
-
-Do you want me to also show you **how to install Alertmanager** so you can get email/Slack alerts when CPU/memory is high?

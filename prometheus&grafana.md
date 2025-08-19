@@ -129,7 +129,14 @@ Grafana web UI 👉 `http://<server-ip>:3000`
    ```
    http://localhost:9090
    ```
-3. Save & Test → Now you can import dashboards.
+3. Save & Test 
+
+# **6. Import Grafana Dashboard**
+
+1. Open Grafana → **Dashboards → Import**
+2. Use prebuilt **Node Exporter Full Dashboard (ID: 1860)**
+   👉 [https://grafana.com/grafana/dashboards/1860](https://grafana.com/grafana/dashboards/1860)
+3. Select Prometheus as data source → Import.
 
 ---
 
