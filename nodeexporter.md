@@ -84,7 +84,11 @@ scrape_configs:
 
   - job_name: 'node_exporter'
     static_configs:
-      - targets: ['localhost:9100']
+      - targets:
+          - 'public-ip:9100'
+          - 'public-ip:9100'
+
+
 ```
 
 Save → Restart Prometheus:
