@@ -51,6 +51,10 @@ sudo systemctl daemon-reload
 sudo systemctl enable --now loki
 ```
 
+- Check version:
+```sh
+loki --version
+```
 ---
 
 #### 5. **Download Promtail Binary**
