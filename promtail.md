@@ -20,6 +20,9 @@ sudo mv promtail /usr/local/bin/
 #### 2. **Create Promtail Config File**
 Here’s a basic config that scrapes system logs and sends them to Loki:
 
+- sudo mkdir -p /etc/promtail
+- sudo vi /etc/promtail/promtail-config.yaml
+
 ```yaml
 server:
   http_listen_port: 9080
