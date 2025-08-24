@@ -101,6 +101,7 @@ sudo systemctl enable --now promtail
 #### 8. **Inbound Ports for Running Services**
 - Loki is accessible via inbound port 3100
 - Promtail listens on inbound port 9080
+- Loki API: 👉 http://localhost:3100/metrics
 
 ---
 
@@ -166,6 +167,7 @@ journalctl -u promtail -f
 
 5. Set the URL to:  
    `http://localhost:3100`
+   
 
 6. Click **Save & Test**.
 

@@ -41,7 +41,9 @@ scrape_configs:
           - localhost
         labels:
           job: varlogs
-          __path__: /var/log/*.log
+          host: sample-server
+          __path__: /var/log/*log
+
 ```
 
 Save this as `/etc/promtail/promtail-config.yaml`.
