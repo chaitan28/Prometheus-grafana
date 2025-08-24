@@ -88,6 +88,7 @@ Restart=always
 [Install]
 WantedBy=multi-user.target
 ```
+- Reload the daemon-service
 ```sh
 sudo systemctl daemon-reload
 sudo systemctl enable --now promtail
