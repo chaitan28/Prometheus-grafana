@@ -33,15 +33,15 @@ Here’s a clean and practical way to install **Loki** and **Promtail** using Do
 
 4. **Run Promtail container**:
    ```bash
-   docker run -d \
-  --name promtail \
-  -v $(pwd):/mnt/config \
-  -v /var/log:/var/log \
-  -v /var/lib/docker/containers:/var/lib/docker/containers \
-  -v /var/run/docker.sock:/var/run/docker.sock \
-  -v /etc/promtail:/etc/promtail \
-  grafana/promtail:3.4.1 \
-  -config.file=/mnt/config/promtail-config.yaml
+    docker run -d \
+    --name promtail \
+    -v $(pwd):/mnt/config \
+    -v /var/log:/var/log \
+    -v /var/lib/docker/containers:/var/lib/docker/containers \
+    -v /var/run/docker.sock:/var/run/docker.sock \
+    -v /etc/promtail:/etc/promtail \
+    grafana/promtail:3.4.1 \
+    -config.file=/mnt/config/promtail-config.yaml
 
    ```
 
