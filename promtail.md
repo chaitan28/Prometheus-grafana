@@ -29,13 +29,14 @@ server:
   grpc_listen_port: 0
 
 positions:
-  filename: /tmp/positions.yaml
+  filename: /var/log/positions.yaml
 
 clients:
-  - url: http://<ip of loki>:3100/loki/api/v1/push
+  - url: http://172.173.113.245:3100/loki/api/v1/push
 
 scrape_configs:
-  - job_name: system
+  # System logs
+  - job_name: system-logs
     static_configs:
       - targets:
           - localhost
@@ -43,6 +44,21 @@ scrape_configs:
           job: varlogs
           host: sample-server
           __path__: /var/log/*log
+
+  # Docker logs with container names
+  - job_name: docker-logs
+    docker_sd_configs:
+      - host: unix:///var/run/docker.sock
+        refresh_interval: 5s
+
+    pipeline_stages:
+      - docker: {}
+
+    relabel_configs:
+      - source_labels: [__meta_docker_container_name]
+        target_label: container
+      - source_labels: [__meta_docker_container_id]  
+        target_label: container_id
 
 ```
 
