@@ -62,7 +62,7 @@ positions:
   filename: /var/log/positions.yaml
 
 clients:
-  - url: http://172.173.113.245:3100/loki/api/v1/push
+  - url: http://143.110.189.74:3100/loki/api/v1/push
 
 scrape_configs:
   # System logs
@@ -72,10 +72,10 @@ scrape_configs:
           - localhost
         labels:
           job: varlogs
-          host: sample-server
+          host: livekit-server
           __path__: /var/log/*log
 
-  # Docker logs with container names
+  # Docker logs via service discovery
   - job_name: docker-logs
     docker_sd_configs:
       - host: unix:///var/run/docker.sock
@@ -86,10 +86,26 @@ scrape_configs:
 
     relabel_configs:
       - source_labels: [__meta_docker_container_name]
-        target_label: container
-      - source_labels: [__meta_docker_container_id]  
+        regex: "(.*)"
+        target_label: container_name
+        replacement: "$1"
+
+      - source_labels: [__meta_docker_container_id]
         target_label: container_id
 
+      - source_labels: [__address__]
+        target_label: host
+        replacement: livekit-server
+
+  # Fallback for containers not discovered via docker_sd
+  - job_name: docker-containers
+    static_configs:
+      - targets:
+          - localhost
+        labels:
+          job: docker-containers
+          host: livekit-server
+          __path__: /var/lib/docker/containers/*/*.log
 ```
 
 Save this as `/etc/promtail/promtail-config.yaml`.
