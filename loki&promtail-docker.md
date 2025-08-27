@@ -13,7 +13,7 @@ Here’s a clean and practical way to install **Loki** and **Promtail** using Do
 
 1. **Create a working directory**:
    ```bash
-   mkdir loki-stack && cd loki-stack
+   mkdir /opt/loki-stack && cd loki-stack
    ```
 
 2. **Download config files**:
@@ -49,8 +49,61 @@ Here’s a clean and practical way to install **Loki** and **Promtail** using Do
    ```bash
    docker container ls
    ```
+6. **Create Promtail Config File**:
+Here’s a basic config that scrapes system logs and sends them to Loki:
 
-6. **Check Loki status**:
+- sudo mkdir -p /etc/promtail
+- sudo vi /etc/promtail/promtail-config.yaml
+
+```yaml
+server:
+  http_listen_port: 9080
+  grpc_listen_port: 0
+
+positions:
+  filename: /var/log/positions.yaml
+
+clients:
+  - url: http://172.173.113.245:3100/loki/api/v1/push
+
+scrape_configs:
+  # System logs
+  - job_name: system-logs
+    static_configs:
+      - targets:
+          - localhost
+        labels:
+          job: varlogs
+          host: sample-server
+          __path__: /var/log/*log
+
+  # Docker logs with container names
+  - job_name: docker-logs
+    docker_sd_configs:
+      - host: unix:///var/run/docker.sock
+        refresh_interval: 5s
+
+    pipeline_stages:
+      - docker: {}
+
+    relabel_configs:
+      - source_labels: [__meta_docker_container_name]
+        target_label: container
+      - source_labels: [__meta_docker_container_id]  
+        target_label: container_id
+
+```
+
+Save this as `/etc/promtail/promtail-config.yaml`.
+
+---
+
+
+
+
+
+
+7. **Check Loki status**:
    - Ready endpoint: [http://localhost:3100/ready](http://localhost:3100/ready)
    - Metrics endpoint: [http://localhost:3100/metrics](http://localhost:3100/metrics)
 
