@@ -1,4 +1,3 @@
-Here’s a clean and practical way to install **Loki** and **Promtail** using Docker — perfect for testing or local development. Since you're already hands-on with container orchestration and observability tools, this should feel right at home.
 
 ---
 
@@ -13,7 +12,7 @@ Here’s a clean and practical way to install **Loki** and **Promtail** using Do
 
 1. **Create a working directory**:
    ```bash
-   mkdir /opt/loki-stack && cd loki-stack
+   mkdir /opt/monitoring/loki-stack && cd /opt/monitoring/loki-stack
    ```
 
 2. **Download config files**:
@@ -39,7 +38,6 @@ Here’s a clean and practical way to install **Loki** and **Promtail** using Do
     -v /var/log:/var/log \
     -v /var/lib/docker/containers:/var/lib/docker/containers \
     -v /var/run/docker.sock:/var/run/docker.sock \
-    -v /etc/promtail:/etc/promtail \
     grafana/promtail:3.4.1 \
     -config.file=/mnt/config/promtail-config.yaml
 
@@ -50,8 +48,7 @@ Here’s a clean and practical way to install **Loki** and **Promtail** using Do
    docker container ls
    ```
 6. **Create Promtail Config File**: 
-- sudo mkdir -p /etc/promtail
-- sudo vi /etc/promtail/promtail-config.yaml
+- sudo vi /opt/monitoring/loki-stack/promtail-config.yaml
 
 ```yaml
 server:
@@ -62,7 +59,7 @@ positions:
   filename: /var/log/positions.yaml
 
 clients:
-  - url: http://143.110.189.74:3100/loki/api/v1/push
+  - url: http://<ip of loki server>:3100/loki/api/v1/push  # Replace with loki server IP
 
 scrape_configs:
   # System logs
@@ -72,7 +69,7 @@ scrape_configs:
           - localhost
         labels:
           job: varlogs
-          host: livekit-server
+          host: monitoring-server  # Replace with Current server name
           __path__: /var/log/*log
 
   # Docker logs via service discovery
@@ -95,7 +92,7 @@ scrape_configs:
 
       - source_labels: [__address__]
         target_label: host
-        replacement: livekit-server
+        replacement: monitoring-server  # Replace with Current server name
 
   # Fallback for containers not discovered via docker_sd
   - job_name: docker-containers
@@ -104,29 +101,25 @@ scrape_configs:
           - localhost
         labels:
           job: docker-containers
-          host: livekit-server
+          host: monitoring-server                     # Replace with Current server name
           __path__: /var/lib/docker/containers/*/*.log
+
 ```
 
-Save this as `/etc/promtail/promtail-config.yaml`.
+Save this as `/opt/monitoring/loki-stack/promtail-config.yaml`.
 
 ---
+7. **Restart Docker**:
+- If any errors are encountered, restart the Docker service:
+```sh
+sudo systemctl daemon-reload
+sudo systemctl restart docker
+sudo systemctl status docker 
 
+```
 
-
-
-
-
-7. **Check Loki status**:
+8. **Check Loki status**:
    - Ready endpoint: [http://localhost:3100/ready](http://localhost:3100/ready)
    - Metrics endpoint: [http://localhost:3100/metrics](http://localhost:3100/metrics)
 
 ---
-
-### 🧩 Optional: Use Docker Compose
-
-If you'd prefer a `docker-compose.yml` setup, [this guide](https://docs.techdox.nz/loki/) walks you through it with config mounting, port mapping, and service dependencies.
-
----
-
-Let me know if you want to integrate Grafana next or enrich Promtail with container metadata — I can help you fine-tune the pipeline for your job-ready observability stack.
